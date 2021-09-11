@@ -5,7 +5,6 @@ const axios = require('axios');
 const authMiddleware = (req, res, next) => {
   if ('authorization' in req.headers) {
     let { API_URL } = process.env;
-
     axios({
       method: 'post',
       url: `${API_URL}/token`,
@@ -14,6 +13,7 @@ const authMiddleware = (req, res, next) => {
     })
       // eslint-disable-next-line no-shadow
       .then((response) => {
+        console.log(response.data);
         if (response.data === 'OK') {
           next();
         } else {
@@ -21,7 +21,7 @@ const authMiddleware = (req, res, next) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        res.status(401).send(createError.Unauthorized());
       });
   } else {
     res.status(401).send(createError.Unauthorized());
