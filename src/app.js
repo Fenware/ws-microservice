@@ -4,9 +4,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
 
-const indexRouter = require('./routes/index');
+require('dotenv').config();
+
+const websocketsRouter = require('./routes/wsRouter');
 
 const errorHandler = require('./middleware/errorHandler');
+const authMiddleware = require('./middleware/auth');
 
 const app = express();
 
@@ -16,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', indexRouter);
+app.use('/ws', authMiddleware, websocketsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
