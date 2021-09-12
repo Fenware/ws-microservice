@@ -10,7 +10,6 @@ import websocketsRouter from "./routes/wsRouter";
 import authMiddleware from "./middleware/auth";
 import errorHandler from './middleware/errorHandler';
 
-
 dotenv.config();
 
 const app: Application = express();
@@ -21,7 +20,7 @@ app.set("port", port);
 const server = http.createServer(app);
 
 /* ---------- Inicializando Socket.io ---------- */
-/* const SocketIoController = require('./controllers/SocketIoController');
+import SocketsController from './controllers/SocketsController';
 
 const io = require('socket.io')(server, {
   cors: {
@@ -30,9 +29,8 @@ const io = require('socket.io')(server, {
   },
 });
 
-const socket = new SocketIoController();
-socket.setSocket(io);
-socket.connect(); */
+SocketsController.setSocket(io);
+SocketsController.connect();
 /* ---------------------------------------------- */
 
 /* Middlewares */
