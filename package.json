@@ -6,7 +6,7 @@
   "author": "Lucas Pintos <lucaspintos909@gmail.com>",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only --debug --clear src/app.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --clear src/app.ts"
   },
   "keywords": [],
   "license": "ISC",
