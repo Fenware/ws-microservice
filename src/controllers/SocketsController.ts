@@ -4,8 +4,8 @@ export default class SocketsController {
 
   private constructor() {}
 
-  public static getInstance(): SocketsController{
-    if(!SocketsController.instance){
+  public static getInstance(): SocketsController {
+    if (!SocketsController.instance) {
       SocketsController.instance = new SocketsController();
     }
     return SocketsController.instance;
@@ -23,6 +23,7 @@ export default class SocketsController {
     this.socket.on("connection", (socket: any) => {
       console.log(`New connection: ${socket.id}`);
 
+      /* Salas de chat */
       socket.on("room:create", (data: any) => {
         console.log(data);
         socket.emit(`room:${data.id_group}`, data);
@@ -32,6 +33,11 @@ export default class SocketsController {
         socket.emit(`room:delete_${data.id_group}`, data);
       });
 
+      /* Mensajes de chat */
+      socket.on("chat:sendMessage", (data: any) => {
+        console.log(data)
+        socket.emit(`chat:message_${data.id_query}`, data);
+      });
     });
   }
 }
