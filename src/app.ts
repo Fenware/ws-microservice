@@ -7,7 +7,7 @@ import helmet from "helmet";
 import http from "http";
 
 import websocketsRouter from "./routes/wsRouter";
-import authMiddleware from "./middleware/auth";
+import {authMiddleware, authMiddlewareSocket} from "./middleware/auth";
 import errorHandler from './middleware/errorHandler';
 
 dotenv.config();
@@ -28,6 +28,8 @@ const io = require('socket.io')(server, {
     methods: ['GET', 'POST'],
   },
 });
+
+io.use(authMiddlewareSocket);
 
 SocketsController.setSocket(io);
 SocketsController.connect();
