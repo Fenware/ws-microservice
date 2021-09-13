@@ -1,6 +1,5 @@
 import {
   User,
-  users,
   userJoin,
   getCurrentUser,
   userLeave,
@@ -35,7 +34,7 @@ export default class SocketsController {
         const user: User = userJoin(socket.id, room);
         socket.join(user.room);
 
-        // Para implementar
+        // Para implementar lo de gente conectada
         /* socket.broadcast
           .to(user.room)
           .emit(
@@ -58,11 +57,6 @@ export default class SocketsController {
         const user: User = userLeave(socket.id);
     
         if (user.id != '') {
-          /* this.io.to(user.room).emit(
-            'message',
-            formatMessage(botName, `${user.username} has left the chat`)
-          ); */
-    
           // Send users and room info
           this.io.to(user.room).emit('roomUsers', {
             room: user.room,
@@ -81,6 +75,19 @@ export default class SocketsController {
         console.log(data);
         socket.emit(`room:delete_${data.id_group}`, data);
       }); */
+
+      socket.on("join:group", (room: string) => {
+        const user: User = userJoin(socket.id, room);
+        socket.join(user.room);
+      });
+      socket.on('group:create', (data: any) => {
+        let user: User = getCurrentUser(socket.id, `group:${data.id_group}`);
+        socket.to(user.room).emit('group:newGroup', data);
+      });
+      socket.on("group:delete", (data: any) => {
+        let user: User = getCurrentUser(socket.id, `group:${data.id_group}`);
+        this.io.to(user.room).emit('group:removeGroup', data);
+      });
     });
   }
 }
