@@ -62,7 +62,7 @@ export default class SocketsController {
             room: user.room,
             users: getRoomUsers(user.room)
           });
-          console.log("Disconnected" );
+          console.log("Disconnected " + socket.id );
         }
       });
       /* Salas de chat */
