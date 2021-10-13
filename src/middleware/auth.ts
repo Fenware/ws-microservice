@@ -54,6 +54,7 @@ export const authMiddlewareSocket = (socket: any, next: NextFunction) => {
         }
       })
       .catch((error) => {
+        console.log(error);
         next(new createHttpError.Unauthorized());
       });
   } else {
