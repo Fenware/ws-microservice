@@ -1,0 +1,35 @@
+name: Docker build and push
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Docker-Build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker Login
+        env:
+          # Declarando variables secretas
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    
+      - name: Docker build
+        # Haciendo el build con el archivo Dockerfile.prod
+        run: |
+          docker build -t lucaspintos909/ws-microservice:latest -f Dockerfile.prod .
+          
+      - name : Docker Push
+        # Subiendo la imagen a dockerhub
+        run: |
+          docker push lucaspintos909/ws-microservice
