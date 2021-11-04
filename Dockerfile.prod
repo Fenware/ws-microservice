@@ -1,0 +1,18 @@
+#Etapa para buildear
+FROM node:14.17.5-alpine as builder
+WORKDIR /usr
+COPY package.json ./
+COPY tsconfig.json ./
+COPY src ./src
+RUN npm install
+RUN npm run build
+
+#Etapa que se va a usar para correr el contenedor
+FROM node:14.17.5-alpine
+WORKDIR /usr
+COPY package.json ./
+RUN npm install --only=production
+COPY --from=builder /usr/dist .
+RUN npm install pm2 -g
+EXPOSE 3000
+CMD ["pm2-runtime", "app.js"]

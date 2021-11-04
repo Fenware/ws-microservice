@@ -1,0 +1,16 @@
+version: "3.5"
+services:
+  ws-microservice:
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://192.168.1.15:8080
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,5 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-const errorHandler = (err, req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+
+export const errorHandler = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // eslint-disable-next-line no-console
   console.error(err);
   // if the error is safe to expose to client
@@ -9,5 +15,3 @@ const errorHandler = (err, req, res, next) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
-
-module.exports = errorHandler;
